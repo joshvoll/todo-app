@@ -1,7 +1,8 @@
 import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
 import { getUserId} from '../../helpers/authHelper'
-import { TodosAccess } from '../../dataLayer/todosAccess'
+// import { TodosAccess } from '../../dataLayer/todosAccess'
+import { getTodos } from '../../businessLogic/todos'
 import { S3Helper } from '../../helpers/s3Helper'
 import { ApiResponseHelper } from '../../helpers/apiResponseHelper'
 import { createLogger } from '../../utils/logger'
@@ -15,8 +16,8 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     const authHeader = event.headers['Authorization']
     const userId = getUserId(authHeader) 
     logger.info(`get groups for user ${userId}`)
-    const result = await new TodosAccess().getUserTodos(userId)
-      
+   // const result = await new TodosAccess().getUserTodos(userId)
+    const result = await getTodos(userId)  
     for(const record of result){
         record.attachmentUrl = await s3Helper.getTodoAttachmentUrl(record.todoId)
     }

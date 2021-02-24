@@ -3,7 +3,8 @@ import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda'
 import { CreateTodoRequest } from '../../requests/CreateTodoRequest'
 import { getUserId} from '../../helpers/authHelper'
-import { TodosAccess } from '../../dataLayer/todosAccess'
+// import { TodosAccess } from '../../dataLayer/todosAccess'
+import { createTodo } from '../../businessLogic/todos'
 import { ApiResponseHelper } from '../../helpers/apiResponseHelper'
 import { createLogger } from '../../utils/logger'
 
@@ -16,7 +17,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     const authHeader = event.headers['Authorization']
     const userId = getUserId(authHeader)
     logger.info(`create group for user ${userId} with data ${newTodo}`)
-    const item = await new TodosAccess().createTodo(newTodo,userId)
+    const item = await createTodo(newTodo,userId)
     
     return new ApiResponseHelper().generateDataSuccessResponse(201,'item',item)
 

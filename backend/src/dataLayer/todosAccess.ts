@@ -55,11 +55,12 @@ export class TodosAccess{
         }).promise()
     }
 
-    async updateTodo(updatedTodo:UpdateTodoRequest,todoId:string){
+    async updateTodo(updatedTodo:UpdateTodoRequest,todoId:string, userId:string){
         await this.docClient.update({
             TableName: this.todosTable,
             Key:{
-                'todoId':todoId
+                'todoId': todoId,
+		'userId': userId
             },
             UpdateExpression: 'set #namefield = :n, dueDate = :d, done = :done',
             ExpressionAttributeValues: {
@@ -71,17 +72,5 @@ export class TodosAccess{
                 "#namefield": "name"
               }
           }).promise()
-    }
-
-    // async deleteTodoById(todoId: string){
-    //     const param = {
-    //         TableName: this.todosTable,
-    //         Key:{
-    //             "todoId":todoId
-    //         }
-    //     }
-      
-    //      await this.docClient.delete(param).promise()
-    // }
-    
+    }    
 }
