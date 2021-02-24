@@ -59,7 +59,7 @@ documentation:
       info:
         version: v1.0.0
         title: TODO API
-        description: serverless api for TODO app by josue rodriguez
+        description: serverless api for TODO app by josue manuel  rodriguez
     models:
       - name: CreateTodo
         contentType: application/json
