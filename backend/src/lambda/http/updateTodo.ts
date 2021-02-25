@@ -7,19 +7,18 @@ import { ApiResponseHelper } from '../../helpers/apiResponseHelper'
 import { createLogger } from '../../utils/logger'
 
 const logger = createLogger('todos')
-const todosAccess = new TodosAccess()
+//const todosAccess = new TodosAccess()
 const apiResponseHelper = new ApiResponseHelper()
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const todoId = event.pathParameters.todoId
-    logger.info(JSON.parse(event.body)) 
     const updatedTodo: UpdateTodoRequest = JSON.parse(event.body)
     const authHeader = event.headers['Authorization']
     const userId = getUserId(authHeader)
 
     
-    logger.info(`UPDATE TODO ${updatedTodo}`) 
-  
+    logger.info(`UPDATE TODO ${userId}`) 
+    /* 
     const item = await todosAccess.getTodoById(todoId)
   
     if(item.Count == 0){
@@ -31,9 +30,12 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         logger.error(`user ${userId} requesting update todo does not belong to his account with id ${todoId}`)
         return apiResponseHelper.generateErrorResponse(400,'TODO does not belong to authorized user')
     }
+    */
+
 
     logger.info(`User ${userId} updating group ${todoId} to be ${updatedTodo}`)
-    await new TodosAccess().updateTodo(updatedTodo, todoId, userId)
+    await new TodosAccess().updateTodo(updatedTodo,todoId, userId)
+    logger.info(`after sending the function to update`)
     return apiResponseHelper.generateEmptySuccessResponse(204)
   
 }

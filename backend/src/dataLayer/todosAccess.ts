@@ -1,11 +1,13 @@
 import { TodoItem } from '../models/TodoItem';
 import { CreateTodoRequest } from '../requests/CreateTodoRequest';
 import { UpdateTodoRequest } from '../requests/UpdateTodoRequest';
+import { createLogger } from '../utils/logger'
 const uuid = require('uuid/v4')
 import * as AWS from 'aws-sdk'
 import * as AWSXRay from 'aws-xray-sdk'
 
 const XAWS = AWSXRay.captureAWS(AWS)
+const logger = createLogger('todosDataAccess');
 
 export class TodosAccess{
     constructor(
@@ -56,11 +58,13 @@ export class TodosAccess{
     }
 
     async updateTodo(updatedTodo:UpdateTodoRequest,todoId:string, userId:string){
+	logger.info(`Updating a todo todoid = ${todoId} `);
+	logger.info(`Updating a todo user = ${userId} `);
         await this.docClient.update({
             TableName: this.todosTable,
             Key:{
-                'todoId': todoId,
-		'userId': userId
+                todoId: todoId,
+		userId: userId
             },
             UpdateExpression: 'set #namefield = :n, dueDate = :d, done = :done',
             ExpressionAttributeValues: {
