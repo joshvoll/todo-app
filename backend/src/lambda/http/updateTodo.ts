@@ -2,7 +2,8 @@ import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda'
 import { getUserId} from '../../helpers/authHelper'
 import { UpdateTodoRequest } from '../../requests/UpdateTodoRequest'
-import { TodosAccess } from '../../dataLayer/todosAccess'
+//import { TodosAccess } from '../../dataLayer/todosAccess'
+import { updateTodo } from '../../businessLogic/todos'
 import { ApiResponseHelper } from '../../helpers/apiResponseHelper'
 import { createLogger } from '../../utils/logger'
 
@@ -34,7 +35,8 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 
 
     logger.info(`User ${userId} updating group ${todoId} to be ${updatedTodo}`)
-    await new TodosAccess().updateTodo(updatedTodo,todoId, userId)
+    // await new TodosAccess().updateTodo(updatedTodo,todoId, userId)
+    await updateTodo(updatedTodo, todoId, userId)
     logger.info(`after sending the function to update`)
     return apiResponseHelper.generateEmptySuccessResponse(204)
   

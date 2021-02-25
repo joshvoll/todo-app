@@ -77,4 +77,14 @@ export class TodosAccess{
               }
           }).promise()
     }    
+
+    async deleteTodo(userId:string, todoId:string) {	
+       await this.docClient.delete({
+            TableName: this.todosTable,
+            Key: {
+	       userId: userId,
+               todoId: todoId
+            }
+       }).promise()
+    }
 }
